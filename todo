@@ -1,0 +1,5 @@
+create temp (working) directory
+clone repo
+copy .h/.hpp to /usr/include
+clean up
+fin.
