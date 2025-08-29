@@ -1,16 +1,18 @@
 #include <iostream>
-#include <cstdlib> // system()
+#include <cstdlib> // system() to call the
+				   //download-[x].sh scripts.
 
 // jmlibh (jM Libraries Helper)
+
+// silly developer sidenote:
+// i did not test this so i am not sure it works
+// tho it's just a couple ifs and elses, right?
+// R.I.P. to whoever tried it and had *any* issue.
+// now i'm going to sleep, goodnight!
 
 int listLibs();
 char selectLib();
 int downloadLib(char& code);
-// 
-// listLibs()  -> Lists existing libraries, hardcoded because I'm lazy.
-// selectLib() -> Lets user select a library with a single char and returns char (user selection)
-// downloadLib( char& code ) -> Downloads selected library
-//
 
 int main() {
 	
@@ -27,6 +29,12 @@ int main() {
 		std::cin >> opt;
 	
 		switch(opt) {
+			// i didn't write shit in a bit
+			// therefore i dont even remember
+			// if the switch case's 'break'
+			// keyword kills the entire loop
+			// (while) or just the switch's.
+			// probably the latter.
 			case "q":
 				listLibs();
 				break;
@@ -35,7 +43,7 @@ int main() {
 				int status = downloadLib(code);
 				if (status == 1)
 					return 1;
-				else return 0;
+				else break;
 			case "e":
 				std::cout << "Exiting ..";
 				return 0;
@@ -48,8 +56,6 @@ int main() {
 		return 1;
 	} return 0;
 }
-
-// todo: instead of handling the entire thing in downloadLib(), use multiple functions maybe?
 
 int listLibs() {
 	
@@ -80,10 +86,40 @@ char selectLib() {
 
 int downloadLib(char& code) {
 	if (code == 'e') {
-		system("mkdir ~/.jlibh");
-	} else if (code == 'd') {
-
-	} else if (code == 'a') {
-
-	} else return 1;
+		// for escape.ansi.sux
+		int return = system("./download-e.sh");
+		if (return != 0) {
+			std::cout << "If nothing happened, try 'chmod +x ./*.sh'\n";
+			return 1;
+		}
+		else return 0;
+	}
+	else if (code == 'd') {
+		// for dog.cfg
+		int return = system("./download-d.sh");
+		if (return != 0) {
+			std::cout << "If nothing happened, try 'chmod +x ./*.sh'\n";
+			return 1;
+		}
+		else return 0;
+	}
+	else if (code == 'a') {
+		// for ange_tui
+		int return = system("./download-a.sh");
+		if (return != 0) {
+			std::cout << "If nothing happened, try 'chmod +x ./*.sh'\n";
+			return 1;
+		}
+		else return 0;
+	}
+	else if (code == '0') {
+		// this is a kinda stupid edge-case for '0'
+		// but since this function generically says
+		// bye-bye to every code that is not the
+		// aforementioned this becomes rather useless.
+		std::cout << "Unknown code entered.\n";
+		return 1;
+	}
+	// any other code is a generic error so just return 1 and call it a day.
+	else return 1;
 }
