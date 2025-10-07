@@ -1,21 +1,24 @@
 #include <iostream>
-#include <cstdlib> // system() to call the
-				   //download-[x].sh scripts.
+#include <limits>
+#include <cstdlib>
 
 // jmlibh (jM Libraries Helper)
 
-// silly developer sidenote:
-// i did not test this so i am not sure it works
-// tho it's just a couple ifs and elses, right?
-// R.I.P. to whoever tried it and had *any* issue.
-// now i'm going to sleep, goodnight!
+#ifdef __WIN32__
+int main() {
+	std::cout << "( @ .@) you are running jmlibh on an unsupported os (wincocks) - better luck next time\n";
+}
+#endif
 
 int listLibs();
 char selectLib();
 int downloadLib(char& code);
+void pause();
+void clear() { system("clear"); }
 
 int main() {
-	
+	clear();
+
 	while(true) {
 		std::cout
 		<< "[ jM Libraries Helper ]\n\n"
@@ -29,38 +32,36 @@ int main() {
 		std::cin >> opt;
 	
 		switch(opt) {
-			// i didn't write shit in a bit
-			// therefore i dont even remember
-			// if the switch case's 'break'
-			// keyword kills the entire loop
-			// (while) or just the switch's.
-			// probably the latter.
-			case "q":
+			case 'q':{
 				listLibs();
+				pause();
+				clear();
 				break;
-			case "w":
+			} case 'w':{
 				char code = selectLib();
 				int status = downloadLib(code);
 				if (status == 1)
 					return 1;
-				else break;
-			case "e":
-				std::cout << "Exiting ..";
+				else {
+					clear();
+					break;
+				}
+			} case 'e':{
+				std::cout << "( T-T) exiting ..";
 				return 0;
-			default:
-				std::cout << "Unknown option selected, exiting ..\n";
+			} default:{
+				std::cout << "(>//< ) unknown option selected, exiting ..\n";
 				return 0;
-
+			}
 		}
-
-		return 1;
 	} return 0;
 }
 
 int listLibs() {
-	
+	clear();
+
 	std::cout
-	<< "[ Libraries list ]\n\n"
+	<< "[ libraries list ]\n\n"
 
 	<< "[e]scape.ANSI.sux\n"
 	<< "[d]og.cfg\n"
@@ -87,39 +88,45 @@ char selectLib() {
 int downloadLib(char& code) {
 	if (code == 'e') {
 		// for escape.ansi.sux
-		int return = system("./download-e.sh");
-		if (return != 0) {
-			std::cout << "If nothing happened, try 'chmod +x ./*.sh'\n";
-			return 1;
-		}
-		else return 0;
+		int returnCode = system("./download-e.sh");
+		if (returnCode != 0) {
+			clear();
+			std::cout << "if nothing happened, try 'chmod +x ./*.sh'\n";
+			pause();
+			return 0;
+		} else return 0;
 	}
 	else if (code == 'd') {
 		// for dog.cfg
-		int return = system("./download-d.sh");
-		if (return != 0) {
-			std::cout << "If nothing happened, try 'chmod +x ./*.sh'\n";
-			return 1;
-		}
-		else return 0;
+		int returnCode = system("./download-d.sh");
+		if (returnCode != 0) {
+			clear();
+			std::cout << "if nothing happened, try 'chmod +x ./*.sh'\n";
+			pause();
+			return 0;
+		} else return 0;
 	}
 	else if (code == 'a') {
 		// for ange_tui
-		int return = system("./download-a.sh");
-		if (return != 0) {
-			std::cout << "If nothing happened, try 'chmod +x ./*.sh'\n";
-			return 1;
-		}
-		else return 0;
+		int returnCode = system("./download-a.sh");
+		if (returnCode != 0) {
+			clear();
+			std::cout << "if nothing happened, try 'chmod +x ./*.sh'\n";
+			pause();
+			return 0;
+		} else return 0;
 	}
-	else if (code == '0') {
-		// this is a kinda stupid edge-case for '0'
-		// but since this function generically says
-		// bye-bye to every code that is not the
-		// aforementioned this becomes rather useless.
-		std::cout << "Unknown code entered.\n";
-		return 1;
+	else {
+		clear();
+		std::cout << "(>//< ) unknown code entered.\n";
+		pause();
+		return 0;
 	}
-	// any other code is a generic error so just return 1 and call it a day.
-	else return 1;
+	return 0; // never reached
+}
+
+void pause() {
+	std::cout << "(-.- ) press enter to continue\n";
+	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::cin.ignore();
 }
